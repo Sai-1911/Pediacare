@@ -1,26 +1,6 @@
 const SlotModel = require("../models/slot");
+const ScheduleModel = require("../models/schedule");
 
-// AM and PM slots
-const SlotAm = [
-  "08:00", "08:15", "08:30", "08:45", "09:00", "09:15", 
-  "09:30", "09:45", "10:00", "10:15", "10:30", "10:45", 
-  "11:00", "11:15"
-];
-
-const SlotPm = [
-  "16:00", "16:15", "16:30", "16:45", "17:00", "17:15", 
-  "17:30", "17:45", "18:00", "18:15", "18:30", "18:45", 
-  "19:00", "19:15", "19:30", "19:45"
-];
-
-
-// Book a slot
-
-// Check slot availability
-// Backend: Updated Response for checkSlotAvailability
-// Check slot availability
-// Check slot availability
-// Check slot availability
 const checkSlotAvailability = async (req, res) => {
   const { date, session } = req.query;
 
@@ -30,11 +10,12 @@ const checkSlotAvailability = async (req, res) => {
 
   console.log(`Received date: ${date}, session: ${session}`);  // Log received date
 
-  // Define slots based on the session
-  const allSlots = session === "Morning" ? SlotAm : SlotPm;
-
   try {
-    // Fetch all booked slots for the given date and session
+    // Fetch slots from ScheduleModel instead of hardcoded arrays
+    const schedule = await ScheduleModel.findOne({ date, session });
+    const allSlots = schedule ? schedule.slots : [];
+
+    // Fetch all booked slots for the given date (filtering by session as well is safer but distinct slot works)
     const bookedSlots = await SlotModel.find({ date, available: false }).distinct("slot");
 
     console.log("Booked Slots:", bookedSlots);
@@ -264,16 +245,9 @@ const getAllBookedSlotsForDate = async (req, res) => {
       date: { $regex: `^${normalizedDate}$`, $options: "i" }
     });
 
-    if (!bookedSlots.length) {
-      return res.status(404).json({ 
-        success: false, 
-        message: "No booked slots found for the given date." 
-      });
-    }
-
     return res.status(200).json({
       success: true,
-      message: "Booked slots retrieved successfully.",
+      message: bookedSlots.length ? "Booked slots retrieved successfully." : "No booked slots found for the given date.",
       date: normalizedDate,
       slots: bookedSlots,
     });
@@ -361,6 +335,64 @@ const getAllSlotsForUser = async (req, res) => {
 
 
 
+const createSchedule = async (req, res) => {
+  const { dates, session, slots } = req.body; 
+
+  if (!dates || !session || !slots) {
+    return res.status(400).json({ error: "Dates, session, and slots are required." });
+  }
+
+  try {
+    const results = [];
+    for (const date of dates) {
+      const updatedSchedule = await ScheduleModel.findOneAndUpdate(
+        { date, session },
+        { slots },
+        { new: true, upsert: true }
+      );
+      results.push(updatedSchedule);
+    }
+
+    return res.status(200).json({
+      message: "Schedule(s) created successfully.",
+      schedules: results
+    });
+  } catch (error) {
+    console.error("Error creating schedule:", error);
+    return res.status(500).json({ error: "Internal Server Error", details: error.message });
+  }
+};
+
+const getDashboardStats = async (req, res) => {
+  const { date } = req.query;
+  
+  if (!date) {
+    return res.status(400).json({ error: "Date is required." });
+  }
+
+  try {
+    const schedules = await ScheduleModel.find({ date });
+    const totalSlots = schedules.reduce((acc, schedule) => acc + schedule.slots.length, 0);
+
+    const finishedSlotsCount = await SlotModel.countDocuments({ date, done: true });
+    const remainingBookedCount = await SlotModel.countDocuments({ date, done: false });
+    
+    // For unbooked slots, total generated slots minus total booked.
+    const totalBookedCount = await SlotModel.countDocuments({ date });
+    const unbookedSlotsCount = totalSlots - totalBookedCount;
+
+    return res.status(200).json({
+      totalSlots,
+      finishedSlots: finishedSlotsCount,
+      remainingBookedSlots: remainingBookedCount,
+      unbookedSlots: unbookedSlotsCount > 0 ? unbookedSlotsCount : 0
+    });
+  } catch (error) {
+    console.error("Error fetching dashboard stats:", error);
+    return res.status(500).json({ error: "Internal Server Error", details: error.message });
+  }
+};
+
 module.exports = {
   getAppointmentDetails,
   getRecentSlot,
@@ -370,5 +402,7 @@ module.exports = {
   getBookedSlots,
   normalizeSlotData,
   getAllBookedSlotsForDate,
-  markSlotAsDone
+  markSlotAsDone,
+  createSchedule,
+  getDashboardStats
 };

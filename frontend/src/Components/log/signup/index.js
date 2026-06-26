@@ -24,11 +24,12 @@ function Signup() {
       }
   
       try {
-        const response = await fetch("http://localhost:8000/patient/signup", {
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/patient/signup`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include",
           body: JSON.stringify({ email, password, mobile, name }),
         });
   
@@ -59,67 +60,65 @@ function Signup() {
   
   
   
-
   return (
-    <div className="container my-4">
-      <div className=" bg-dark text-center my-4 log-banner mx-auto">
-        <h1 className="bg-dark text-light">Signup</h1>
-        <form className="h-75 p-3 w-75 rounded border mx-auto" onSubmit={handleSignup}>
+    <div className="container d-flex justify-content-center align-items-center" style={{minHeight: '80vh'}}>
+      <div className="text-center log-banner">
+        <h1>Create Account</h1>
+        <form onSubmit={handleSignup}>
           <input
-            className="p-2 auth-input w-100"
+            className="auth-input"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter email"
+            placeholder="Email Address"
             required
           />
-          <br />
           <input
-            className="p-2 auth-input w-100"
+            className="auth-input"
             type="text"
             value={mobile}
             onChange={(e) => setMobile(e.target.value)}
-            placeholder="Enter phone number"
+            placeholder="Mobile Number"
             required
           />
-          <br />
           <input
-            className="p-2 auth-input w-100"
+            className="auth-input"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Enter name"
+            placeholder="Full Name"
             required
           />
-          <br />
           <input
-            className="p-2 auth-input w-100"
+            className="auth-input"
             type={showPassword ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter password"
+            placeholder="Password"
             required
           />
-          <br />
-          <div className="d-flex align-items-center w-100">
+          <div className="d-flex align-items-center" style={{gap: '10px'}}>
             <input
-              className="mx-3 check-input"
+              className="check-input"
               type="checkbox"
+              id="showPasswordSignup"
               onChange={() => setShowPassword(!showPassword)}
             />
-            <p className="lh text-light">Show password</p>
+            <label htmlFor="showPasswordSignup" style={{color: '#64748b', margin: 0, cursor: 'pointer'}}>Show password</label>
           </div>
-          <button type="submit" className="btn btn-primary mx-auto w-50 text-light">
-            Signup
+          <button type="submit" className="btn-auth-primary w-100 mt-2">
+            Sign Up
           </button>
-          <p className="text-light">
-            If you already have an account?{" "}
-            <Link to="/Login" className="text-danger">
-              Login
+          
+          {success && <p className="text-success mt-3 mb-0 fw-bold">{success}</p>}
+          {error && <p className="text-danger mt-3 mb-0 fw-bold">{error}</p>}
+          
+          <p className="mt-3 mb-0" style={{color: '#64748b'}}>
+            Already have an account?{" "}
+            <Link to="/Login" style={{color: '#FFB703', fontWeight: '700', textDecoration: 'none'}}>
+              Log in
             </Link>
           </p>
-          {success && <p className="text-success">{success}</p>}
-          {error && <p className="text-danger">{error}</p>}
         </form>
       </div>
     </div>

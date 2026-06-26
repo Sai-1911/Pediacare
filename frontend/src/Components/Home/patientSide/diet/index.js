@@ -22,7 +22,7 @@ function Diet() {
 
     const fetchDiet = async () => {
       try {
-        const response = await fetch(`http://localhost:8000/diet/getDiet/${patientNo}`);
+        const response = await fetch(`${process.env.REACT_APP_API_URL}/diet/getDiet/${patientNo}`);
         if (!response.ok) {
           throw new Error("No diet found for this patient");
         }
@@ -39,64 +39,97 @@ function Diet() {
   }, []);
 
   return (
-    <div className='container border my-2 mx-auto text-center bg-dark'>
-     <h1 className='text-light'> Recommended Diet</h1>
-     <div className='bg-dark w-75 mx-auto rounded my-3 border'>
-     <div class="accordion accordion-flush" id="accordionFlushExample">
-     <div className="accordion-item">
-  <h2 className="accordion-header">
-    <button
-      className="accordion-button fs-4 z-2 collapsed"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#flush-collapsesix"
-      aria-expanded="false"
-      aria-controls="flush-collapsesix"
-    >
-      Doctor Recommended Diet
-    </button>
-  </h2>
-  <div
-    id="flush-collapsesix"
-    className="accordion-collapse collapse"
-    data-bs-parent="#accordionFlushExample"
-  >
-    <div className="accordion-body">
-      {diet ? (
-        <div>
-          <div className='d-flex border justify-content-evenly'>
-          <h5><strong className='text-danger'>Patient No:</strong> {diet.patientNo}</h5>
-          <h5><strong className='text-danger'>Date:</strong> {new Date(diet.date).toLocaleDateString()}</h5>
-          </div>
+    <div className="container py-5 diet-container">
+      <div className="text-center mb-5">
+        <h2 className="fw-bold" style={{color: '#0077B6'}}>
+          <i className="bi bi-basket-fill me-3 text-warning"></i>
+          Dietary Guidelines
+        </h2>
+        <p className="text-muted mt-2">Nutritional plans customized for your child's age and health needs.</p>
+      </div>
+
+      <div className="modern-accordion">
+        <div className="accordion accordion-flush" id="accordionFlushExample">
           
-          <ul className=' text-center'>
-           <h4 className=' text-danger '>Breakfast</h4>
-           <li>{diet.breakfast.join("/  " )}</li>
-          </ul>
-          <ul className='text-center'>
-           <h4 className='  text-danger '>Morning Snack</h4>
-           <li>{diet.morningSnack.join("/ ")}</li>
-          </ul>
-          <ul className='text-center'>
-           <h4 className='  text-danger '>Lunch</h4>
-           <li>{diet.lunch.join("/ ")}</li>
-          </ul>
-          <ul className=' text-center'>
-           <h4 className=' text-danger '>Evening Snack</h4>
-           <li>{diet.eveningSnack.join("/ ")}</li>
-          </ul>
-          <ul className=' text-center'>
-           <h4 className='  text-danger '>Dinner</h4>
-           <li> {diet.dinner.join("/ ")}</li>
-          </ul>
-         
-        </div>
-      ) : (
-        <p>Loading diet details...</p>
-      )}
-    </div>
-  </div>
-</div>
+          <div className="accordion-item">
+            <h2 className="accordion-header">
+              <button
+                className="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#flush-collapsesix"
+                aria-expanded="false"
+                aria-controls="flush-collapsesix"
+              >
+                <i className="bi bi-prescription2 me-2 text-danger"></i>
+                Doctor's Custom Prescription
+              </button>
+            </h2>
+            <div
+              id="flush-collapsesix"
+              className="accordion-collapse collapse"
+              data-bs-parent="#accordionFlushExample"
+            >
+              <div className="accordion-body">
+                {diet ? (
+                  <div>
+                    <div className="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom">
+                      <span className="badge bg-primary px-3 py-2 rounded-pill">Patient ID: {diet.patientNo}</span>
+                      <span className="text-muted fw-bold"><i className="bi bi-calendar-event me-2"></i>{new Date(diet.date).toLocaleDateString()}</span>
+                    </div>
+                    
+                    <div className="row g-3">
+                      <div className="col-12 col-md-6">
+                        <div className="diet-card">
+                          <h4 className="meal-title text-primary"><i className="bi bi-sunrise me-2"></i>Breakfast</h4>
+                          <ul className="meal-list">
+                            <li>{diet.breakfast.join(" / " )}</li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="col-12 col-md-6">
+                        <div className="diet-card">
+                          <h4 className="meal-title text-info"><i className="bi bi-sun me-2"></i>Morning Snack</h4>
+                          <ul className="meal-list">
+                            <li>{diet.morningSnack.join(" / ")}</li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="col-12 col-md-6">
+                        <div className="diet-card">
+                          <h4 className="meal-title text-warning"><i className="bi bi-brightness-high-fill me-2"></i>Lunch</h4>
+                          <ul className="meal-list">
+                            <li>{diet.lunch.join(" / ")}</li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="col-12 col-md-6">
+                        <div className="diet-card">
+                          <h4 className="meal-title text-danger"><i className="bi bi-cup-hot-fill me-2"></i>Evening Snack</h4>
+                          <ul className="meal-list">
+                            <li>{diet.eveningSnack.join(" / ")}</li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div className="col-12">
+                        <div className="diet-card">
+                          <h4 className="meal-title text-dark"><i className="bi bi-moon-stars-fill me-2"></i>Dinner</h4>
+                          <ul className="meal-list">
+                            <li>{diet.dinner.join(" / ")}</li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-center p-4">
+                    <div className="spinner-border text-primary mb-3" role="status"></div>
+                    <p className="text-muted fw-bold">Loading your personalized diet plan...</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
 
   <div className="accordion-item">
     <h2 className="accordion-header">
@@ -363,16 +396,21 @@ function Diet() {
       </div>
     </div>
   </div>
-</div>
-     </div>
+        </div>
+      </div>
     
-    <div className='disclaimer   mx-auto  my-2 text-start '>
-        <h1 className='text-danger'>Disclaimer:</h1>
-        <p className='fs-5 text-light'>
-The diet recommendations provided on this website are intended for informational purposes only and are not a substitute for professional medical advice, diagnosis, or treatment. While every effort has been made to provide accurate and reliable information, individual dietary needs may vary depending on a child’s age, health status, and specific nutritional requirements. It is always advisable to consult with a pediatrician or a registered dietitian before making any significant changes to your child's diet.
-
-The meal plans shared here are general suggestions and may not be suitable for all children, especially those with food allergies, intolerances, or specific medical conditions. Parents and caregivers should monitor their child's dietary needs and preferences and make adjustments as needed.</p>
-    </div>
+      <div className='disclaimer shadow-sm'>
+        <h4 className='text-danger fw-bold mb-3'>
+          <i className="bi bi-exclamation-triangle-fill me-2"></i>
+          Disclaimer
+        </h4>
+        <p className='mb-3' style={{fontSize: '0.95rem', lineHeight: '1.6'}}>
+          The diet recommendations provided on this website are intended for informational purposes only and are not a substitute for professional medical advice, diagnosis, or treatment. While every effort has been made to provide accurate and reliable information, individual dietary needs may vary depending on a child’s age, health status, and specific nutritional requirements. It is always advisable to consult with a pediatrician or a registered dietitian before making any significant changes to your child's diet.
+        </p>
+        <p className='mb-0' style={{fontSize: '0.95rem', lineHeight: '1.6'}}>
+          The meal plans shared here are general suggestions and may not be suitable for all children, especially those with food allergies, intolerances, or specific medical conditions. Parents and caregivers should monitor their child's dietary needs and preferences and make adjustments as needed.
+        </p>
+      </div>
 
     </div>
   )

@@ -58,7 +58,7 @@ const [bookedSlots, setBookedSlots] = useState([]);
     console.log("Formatted date:", formattedDate);
     console.log(`📅 Requesting slots for: ${formattedDate} ${formData.session}`);
   
-    const url = `http://localhost:8000/slot/availability?date=${formattedDate}&session=${formData.session}`;
+    const url = `${process.env.REACT_APP_API_URL}/slot/availability?date=${formattedDate}&session=${formData.session}`;
     console.log("Request URL:", url);
     
     setLoadingSlots(true);
@@ -134,7 +134,7 @@ const [bookedSlots, setBookedSlots] = useState([]);
     };
 
     try {
-      const response = await fetch("http://localhost:8000/slot/bookslot", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/slot/bookslot`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -163,102 +163,134 @@ const [bookedSlots, setBookedSlots] = useState([]);
     }
   }; 
   return (
-    <div className="service container mx-auto border p-4 bg-light rounded">
-      <h1 className="text-center">Slot Booking</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Select Date:</label>
-          <DatePicker
-            selected={startDate}
-            onChange={(date) => setStartDate(date)}
-            className="form-control"
-            minDate={today}
-            maxDate={maxDate}
-          />
-        </div>
-        <div>
-          <label>Name:</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-            className="form-control"
-          />
-        </div>
-        <div>
-          <label>Parent Name:</label>
-          <input
-            type="text"
-            name="parentName"
-            value={formData.parentName}
-            onChange={handleInputChange}
-            className="form-control"
-          />
-        </div>
-        <div>
-          <label>Age:</label>
-          <input
-            type="number"
-            name="age"
-            value={formData.age}
-            onChange={handleInputChange}
-            className="form-control"
-          />
-        </div>
-        <div>
-          <label>Session:</label>
-          <select
-            name="session"
-            value={formData.session}
-            onChange={handleInputChange}
-            className="form-select"
-          >
-            <option value="Choose...">Choose...</option>
-            <option value="Morning">Morning</option>
-            <option value="Evening">Evening</option>
-          </select>
-        </div>
-        <div>
-          <label>Service:</label>
-          <select
-            name="service"
-            value={formData.service}
-            onChange={handleInputChange}
-            className="form-select"
-          >
-            <option value="Vaccination">Vaccination</option>
-            <option value="Checkup">Checkup</option> 
-          </select>
-        </div>
-        <div>
-          <h5>Available Slots:</h5>
-          {loadingSlots ? (
-            <p>Loading...</p>
-          ) : availableSlots.length > 0 ? (
-            <div className="d-flex flex-wrap">
-           {availableSlots.map((slot) => (
-  <button
-    key={slot}
-    type="button"
-    className={`btn ${formData.slot === slot ? "btn-success" : "btn-secondary"} mx-1 my-1`}
-    onClick={() => handleSlotSelect(slot)}
-  >
-    {slot}
-  </button>
-))}
-
+    <div className="container px-4">
+      <div className="modern-form-container">
+        <h1 className="modern-form-title">Book a Slot</h1>
+        <form onSubmit={handleSubmit}>
+          <div className="row g-4">
+            <div className="col-12 col-md-6">
+              <div className="modern-input-group">
+                <label className="modern-label">Select Date:</label>
+                <DatePicker
+                  selected={startDate}
+                  onChange={(date) => setStartDate(date)}
+                  className="modern-input"
+                  minDate={today}
+                  maxDate={maxDate}
+                  placeholderText="Click to select a date"
+                />
+              </div>
             </div>
-          ) : (
-            <p>{message || "No slots available for the selected date and session."}</p>
-          )}
-        </div>
-        <div className="text-center">
-          <button type="submit" className="btn w-25 btn-primary mt-3">
-            Book Slot
-          </button>
-        </div>
-      </form>
+
+            <div className="col-12 col-md-6">
+              <div className="modern-input-group">
+                <label className="modern-label">Session:</label>
+                <select
+                  name="session"
+                  value={formData.session}
+                  onChange={handleInputChange}
+                  className="modern-select"
+                >
+                  <option value="Choose...">Choose...</option>
+                  <option value="Morning">Morning</option>
+                  <option value="Evening">Evening</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="col-12 col-md-6">
+              <div className="modern-input-group">
+                <label className="modern-label">Child's Name:</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  className="modern-input"
+                  placeholder="Enter child's name"
+                />
+              </div>
+            </div>
+
+            <div className="col-12 col-md-6">
+              <div className="modern-input-group">
+                <label className="modern-label">Parent's Name:</label>
+                <input
+                  type="text"
+                  name="parentName"
+                  value={formData.parentName}
+                  onChange={handleInputChange}
+                  className="modern-input"
+                  placeholder="Enter parent's name"
+                />
+              </div>
+            </div>
+
+            <div className="col-12 col-md-6">
+              <div className="modern-input-group">
+                <label className="modern-label">Age:</label>
+                <input
+                  type="number"
+                  name="age"
+                  value={formData.age}
+                  onChange={handleInputChange}
+                  className="modern-input"
+                  placeholder="Child's age in years"
+                />
+              </div>
+            </div>
+
+            <div className="col-12 col-md-6">
+              <div className="modern-input-group">
+                <label className="modern-label">Service Type:</label>
+                <select
+                  name="service"
+                  value={formData.service}
+                  onChange={handleInputChange}
+                  className="modern-select"
+                >
+                  <option value="Vaccination">Vaccination</option>
+                  <option value="Checkup">Checkup</option> 
+                </select>
+              </div>
+            </div>
+
+            <div className="col-12 mt-4">
+              <h5 className="modern-label mb-3 border-bottom pb-2">Available Slots</h5>
+              {loadingSlots ? (
+                <div className="d-flex align-items-center text-primary">
+                  <div className="spinner-border spinner-border-sm me-2" role="status"></div>
+                  <span>Loading available slots...</span>
+                </div>
+              ) : availableSlots.length > 0 ? (
+                <div className="d-flex flex-wrap gap-2">
+                  {availableSlots.map((slot) => (
+                    <button
+                      key={slot}
+                      type="button"
+                      className={`slot-btn ${formData.slot === slot ? "selected" : ""}`}
+                      onClick={() => handleSlotSelect(slot)}
+                    >
+                      {slot}
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <div className="alert alert-light text-muted border-0 bg-light rounded-3">
+                  <i className="bi bi-info-circle me-2"></i>
+                  {message || "No slots available for the selected date and session."}
+                </div>
+              )}
+            </div>
+
+            <div className="col-12 mt-4">
+              <button type="submit" className="btn-book-primary shadow-sm">
+                Confirm Booking
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

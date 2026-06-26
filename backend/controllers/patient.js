@@ -1,4 +1,6 @@
 const { PatientModel, CounterModel }= require('../models/patient'); // Declare only once
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 // POST Route for Signup
 const getNextPatientNo = async () => {
@@ -29,17 +31,41 @@ const signup = async (req, res) => {
     // Get next patient number
     const patientNo = await getNextPatientNo();
 
+    // Hash the password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
     // Save new patient
     const newPatient = new PatientModel({
       patientNo,
       email,
-      password, // Ensure this is hashed in production
+      password: hashedPassword, // Ensure this is hashed in production
       mobile,
       name,
     });
 
     await newPatient.save();
-    res.status(201).json(newPatient);
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { _id: newPatient._id, patientNo: newPatient.patientNo },
+      process.env.JWT_SECRET || 'fallback_secret_key',
+      { expiresIn: '7d' }
+    );
+
+    // Set cookie
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    });
+
+    res.status(201).json({
+      _id: newPatient._id,
+      patientNo: newPatient.patientNo,
+      name: newPatient.name
+    });
   } catch (error) {
     console.error('Signup error:', error.message); // Log the error message
     res.status(500).json({ error: 'Failed to save patient', details: error.message });
@@ -59,15 +85,45 @@ const login = async (req, res) => {
       $or: [{ email: identifier }, { mobile: identifier }],
     });
 
-    if (!user || user.password !== password) {
+    if (!user) {
       return res.status(401).json({ error: 'Invalid email/mobile or password.' });
     }
 
-    const { password: _, ...userDetails } = user._doc;
+    let isMatch = false;
+    // Check if the password is a bcrypt hash (starts with $2b$ or $2a$)
+    if (user.password.startsWith('$2b$') || user.password.startsWith('$2a$')) {
+      isMatch = await bcrypt.compare(password, user.password);
+    } else {
+      // Fallback for existing plaintext passwords
+      isMatch = (user.password === password);
+    }
+
+    if (!isMatch) {
+      return res.status(401).json({ error: 'Invalid email/mobile or password.' });
+    }
+
+    // Generate JWT token
+    const token = jwt.sign(
+      { _id: user._id, patientNo: user.patientNo },
+      process.env.JWT_SECRET || 'fallback_secret_key',
+      { expiresIn: '7d' }
+    );
+
+    // Set cookie
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    });
 
     res.json({
       message: 'Login successful',
-      user: userDetails,
+      user: {
+        _id: user._id,
+        patientNo: user.patientNo,
+        name: user.name
+      },
     });
   } catch (error) {
     console.error('Login error:', error);

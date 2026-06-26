@@ -1,41 +1,68 @@
-.log-banner{
-    background-color: #8C95E8;
-    border-radius: 20px;
-    height: 80vh;
-    width: 40%;
- }
- .check-input{
-    line-height: 0%;
-    height: 20px;
-    width: 20px;
- }
- 
- .log-banner form{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
- }
- .auth-input{
-    color: white;
-    background-color: transparent;
-    color: white;
-    border: none;
-    border-bottom: 2px solid white;
- 
- }
- @media only screen and (max-width: 850px) {
-    .log-banner{
-        background-color: #8C95E8;
-        border-radius: 20px;
-        height: 80vh;
-        width: 100%;
-     }
- }
- @media only screen and (max-width: 1000px) {
-    .log-banner{
-        background-color: #8C95E8;
-        border-radius: 20px;
-        height: 80vh;
-        width: 80%;
-     }
- }
+.log-banner {
+  background: #FFFFFF;
+  border-radius: 24px;
+  width: 100%;
+  max-width: 450px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  font-family: 'Nunito', sans-serif;
+  margin-top: 50px;
+  margin-bottom: 50px;
+}
+
+.log-banner h1 {
+  color: #0077B6;
+  font-weight: 800;
+  margin-bottom: 30px;
+}
+
+.log-banner form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.auth-input {
+  color: #2B2D42;
+  background-color: #F8F9FA;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.auth-input:focus {
+  outline: none;
+  border-color: #00B4D8;
+  box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.1);
+}
+
+.check-input {
+  height: 18px;
+  width: 18px;
+  cursor: pointer;
+}
+
+.btn-auth-primary {
+  background-color: #00B4D8;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 12px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.btn-auth-primary:hover {
+  background-color: #0077B6;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 119, 182, 0.3);
+}
+
+@media (max-width: 768px) {
+  .log-banner {
+    padding: 30px 20px;
+  }
+}

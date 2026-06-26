@@ -117,163 +117,155 @@ function Home() {
   
 
   return (
-    <div className="container home-com">
-      {/* Doctor banner */}
-      <div className="w-100 carousel-banner position-relative">
-        <p className="display-3 text-center">CHILDCARE CLINIC</p>
-        <img className="img-fluid" src={Doc} alt="Doctor Banner" />
-        <nav className="text-center">
-          <h2>{isLoggedIn ? "" : "For more services"}</h2>
-          <button
-            className="btn btn-warning display-4"
-            onClick={isLoggedIn ? handleHelloCaretaker : handleLogin}
-          >
-            {isLoggedIn ? "Hello Caretaker" : "Login"}
-          </button>
-          <h4 className="btn btn-warning my-3 mx-4">Your patient ID: {isLoggedIn ? JSON.parse(localStorage.getItem("user"))?.patientNo : "Not Available"}</h4>
-
-        </nav>
+    <div className="home-com">
+      {/* Hero Banner */}
+      <div className="hero-banner">
+        <div className="hero-content">
+          <h1 className="hero-title">Welcome to<br/>Childcare Clinic</h1>
+          <p className="hero-subtitle">Providing compassionate and expert care for your little ones.</p>
+          
+          <div>
+            {isLoggedIn ? (
+              <button className="btn-custom-primary" onClick={handleHelloCaretaker}>
+                Hello Caretaker
+              </button>
+            ) : (
+              <div>
+                <p className="hero-subtitle mb-2" style={{color: '#fff', fontWeight: 'bold'}}>For more services</p>
+                <button className="btn-custom-primary" onClick={handleLogin}>
+                  Login / Signup
+                </button>
+              </div>
+            )}
+          </div>
+          
+          {isLoggedIn && (
+            <div className="patient-id-badge shadow-sm">
+              Patient ID: {JSON.parse(localStorage.getItem("user"))?.patientNo || "Not Available"}
+            </div>
+          )}
+        </div>
+        <img className="hero-image" src={Doc} alt="Doctor" />
       </div>
 
       {/* Book Slot and Vaccination Reminder */}
-      <div className="row my-4">
-        <div className="col-12 col-md-6">
-          <div
-            id="carouselExampleInterval"
-            className="carousel slide"
-            data-bs-ride="carousel"
-          >
-            <div className="carousel-inner">
-              <div className="carousel-item active" data-bs-interval="3000">
-                <img src={carousel1} className="d-block w-100" alt="carousel" />
+      <div className="row g-4 mb-5">
+        <div className="col-12 col-lg-6">
+          <div className="carousel-wrapper">
+            <div id="carouselExampleInterval" className="carousel slide h-100" data-bs-ride="carousel">
+              <div className="carousel-inner h-100">
+                <div className="carousel-item active h-100" data-bs-interval="3000">
+                  <img src={carousel1} className="d-block w-100 h-100" alt="carousel" style={{objectFit: 'cover'}} />
+                </div>
+                <div className="carousel-item h-100" data-bs-interval="2000">
+                  <img src={carousel2} className="d-block w-100 h-100" alt="carousel" style={{objectFit: 'cover'}} />
+                </div>
+                <div className="carousel-item h-100">
+                  <img src={carousel3} className="d-block w-100 h-100" alt="carousel" style={{objectFit: 'cover'}} />
+                </div>
               </div>
-              <div className="carousel-item" data-bs-interval="2000">
-                <img src={carousel2} className="d-block w-100" alt="carousel" />
-              </div>
-              <div className="carousel-item">
-                <img src={carousel3} className="d-block w-100" alt="carousel" />
-              </div>
+              <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+                <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span className="visually-hidden">Previous</span>
+              </button>
+              <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+                <span className="carousel-control-next-icon" aria-hidden="true"></span>
+                <span className="visually-hidden">Next</span>
+              </button>
             </div>
-            <button
-              className="carousel-control-prev"
-              type="button"
-              data-bs-target="#carouselExampleInterval"
-              data-bs-slide="prev"
-            >
-              <span
-                className="carousel-control-prev-icon"
-                aria-hidden="true"
-              ></span>
-              <span className="visually-hidden">Previous</span>
-            </button>
-            <button
-              className="carousel-control-next"
-              type="button"
-              data-bs-target="#carouselExampleInterval"
-              data-bs-slide="next"
-            >
-              <span
-                className="carousel-control-next-icon"
-                aria-hidden="true"
-              ></span>
-              <span className="visually-hidden">Next</span>
-            </button>
           </div>
         </div>
-        <div className="col-12 row col-md-6">
-          <div className="col-12 col-xl-6 p-4">
-            <div className="card my-auto text-light p-2 bg-dark">
-              <div className="card-body">
-                <h3 className="card-title">Book Slot</h3>
-                <h6 className="card-subtitle mb-2 text-body-secondary">
-                  Check-Up
-                </h6>
-                <p className="card-text">
-                pre-book slots for check-up
-                </p>
-                <Link to="/Service" className="card-link btn btn-primary">
-                  Book Slot
+
+        <div className="col-12 col-lg-6">
+          <div className="row g-4 h-100">
+            <div className="col-12 col-md-6">
+              <div className="modern-card">
+                <div className="card-icon-wrapper bg-blue-light">
+                  <i className="fas fa-calendar-check" style={{fontSize: '24px'}}>📅</i>
+                </div>
+                <h3>Book Slot</h3>
+                <p>Pre-book your clinic slots for routine check-ups and consultations easily.</p>
+                <Link to="/Service" className="btn-custom-primary mt-auto text-center" style={{textDecoration: 'none'}}>
+                  Book Now
                 </Link>
               </div>
             </div>
-          </div>
-          <div className="col-12 col-xl-6 p-4">
-            <div className="card my-auto text-light p-2 bg-dark">
-            <div className="vaccination-info card-body">
-  <h2>Upcoming Vaccination</h2>
-  <h3 className="text-danger">{nextVaccine.name}</h3>
-  {nextVaccine.date && <p>Due Date: {nextVaccine.date}</p>}
-  {nextVaccine.daysToDue !== null && (
-    <p>Days Remaining: {nextVaccine.daysToDue} day(s)</p>
-  )}
 
-  {nextVaccine.daysToDue !== null && nextVaccine.daysToDue <= 3 ? (
-    <Link className="btn btn-info" to="/Service">
-      Book Slot
-    </Link>
-  ) : (
-    <button className="btn btn-secondary" disabled>
-      Opening Soon
-    </button>
-  )}
-</div>
+            <div className="col-12 col-md-6">
+              <div className="modern-card">
+                <div className="card-icon-wrapper bg-orange-light">
+                  <i className="fas fa-syringe" style={{fontSize: '24px'}}>💉</i>
+                </div>
+                <h3>Vaccination</h3>
+                {nextVaccine.name !== "All vaccines are up-to-date" ? (
+                  <div className="vaccination-alert">
+                    <h4>{nextVaccine.name}</h4>
+                    {nextVaccine.date && <p className="mb-1">Due: <strong>{nextVaccine.date}</strong></p>}
+                    {nextVaccine.daysToDue !== null && (
+                      <p>Remaining: <strong>{nextVaccine.daysToDue} day(s)</strong></p>
+                    )}
+                  </div>
+                ) : (
+                  <p className="text-success fw-bold mb-4 mt-2">All vaccines are up-to-date! 🎉</p>
+                )}
 
+                {nextVaccine.daysToDue !== null && nextVaccine.daysToDue <= 3 ? (
+                  <Link to="/Service" className="btn-custom-primary mt-auto text-center" style={{textDecoration: 'none'}}>
+                    Schedule Vaccine
+                  </Link>
+                ) : (
+                  <button className="btn btn-secondary mt-auto" disabled style={{borderRadius: '50px', padding: '12px', fontWeight: 'bold'}}>
+                    {nextVaccine.name === "All vaccines are up-to-date" ? "Completed" : "Opening Soon"}
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Diet Chart, Personal Details, Doctor Prescription */}
-      <div className="row">
-        {/* Diet Chart */}
-        <div className="col-md-4 bg-light">
-          <div className="card my-2 text-center">
-            <img src={diet} className="card-img-top" alt="Diet Chart" />
-            <div className="card-body">
-              <h5 className="card-title">Recommended Diet</h5>
-              <p className="card-text">
-                CUSTOMIZED DIET PROVIDE BY DOCTOR.
-              </p>
-              <Link to="/diet" className="btn btn-primary">
+      {/* Diet Chart, Personal Details, Doctor Prescription Grid */}
+      <div className="row g-4 mb-4">
+        <div className="col-12 col-md-4">
+          <div className="service-card">
+            <div className="service-img-container">
+              <img src={diet} alt="Diet Chart" />
+            </div>
+            <div className="service-card-body text-center">
+              <h5>Recommended Diet</h5>
+              <p>Customized healthy diet plans provided by your doctor for proper child growth.</p>
+              <Link to="/diet" className="btn-outline-primary-custom mt-auto">
                 Get Diet
               </Link>
             </div>
           </div>
         </div>
 
-        {/* Personal Data */}
-        <div className="col-md-4 bg-light">
-          <div className="card my-2 text-center">
-            <img
-              src={tablet}
-              className="card-img-top"
-              alt="Medicine Prescription"
-            />
-            <div className="card-body">
-              <h5 className="card-title">Medicine Prescription</h5>
-              <p className="card-text">
-                Medicine prescription for each slot. 
-              </p>
-              <Link to='/prescription' className="btn btn-primary">Show Prescription</Link>
+        <div className="col-12 col-md-4">
+          <div className="service-card">
+            <div className="service-img-container">
+              <img src={tablet} alt="Medicine Prescription" />
+            </div>
+            <div className="service-card-body text-center">
+              <h5>Prescriptions</h5>
+              <p>View the prescribed medicines for each visited slot instantly.</p>
+              <Link to="/prescription" className="btn-outline-primary-custom mt-auto">
+                View Prescriptions
+              </Link>
             </div>
           </div>
         </div>
 
-        {/* Doctor Prescription */}
-        <div className="col-md-4 bg-light">
-          <div className="card my-2 text-center">
-            <img
-              src={personal}
-              className="card-img-top"
-              alt="Personal Details"
-            />
-            <div className="card-body">
-              <h5 className="card-title">Personal Details</h5>
-              <p className="card-text">
-                Update user's presonal details.
-              </p>
-              <Link to="/personal" className="btn btn-primary">
-                Personal Details
+        <div className="col-12 col-md-4">
+          <div className="service-card">
+            <div className="service-img-container">
+              <img src={personal} alt="Personal Details" />
+            </div>
+            <div className="service-card-body text-center">
+              <h5>Personal Details</h5>
+              <p>Update and manage your child's personal and medical information.</p>
+              <Link to="/personal" className="btn-outline-primary-custom mt-auto">
+                Manage Details
               </Link>
             </div>
           </div>

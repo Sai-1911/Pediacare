@@ -1,8 +1,191 @@
-.finished-vaccine{
-    height: 30vh;
-    overflow-y: scroll;
+.clinic-dashboard-wrapper {
+  background-color: #F4F7FB;
+  min-height: 100vh;
+  padding-bottom: 50px;
 }
-.medicine-list{
-    width: 100% ;
-    overflow-x: scroll;
+
+.clinic-dashboard-container {
+  font-family: 'Nunito', sans-serif;
+  max-width: 1400px;
+}
+
+/* Search Section */
+.search-banner {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  margin-bottom: 30px;
+}
+
+.search-input-group {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.search-input {
+  border: 2px solid #E2E8F0;
+  border-radius: 50px 0 0 50px;
+  padding: 15px 25px;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #00B4D8;
+  box-shadow: none;
+}
+
+.search-btn {
+  border-radius: 0 50px 50px 0;
+  padding: 15px 35px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #00B4D8 0%, #0077B6 100%);
+  color: white;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.search-btn:hover {
+  background: linear-gradient(135deg, #0077B6 0%, #023E8A 100%);
+  color: white;
+}
+
+/* Patient Overview Cards */
+.info-label {
+  font-size: 0.9rem;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.info-value {
+  font-size: 1.1rem;
+  color: #1E293B;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+/* Vaccines */
+.finished-vaccine, .upcoming-vaccine {
+  max-height: 250px;
+  overflow-y: auto;
+  padding-right: 10px;
+  margin-bottom: 20px;
+}
+
+.vaccine-item {
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  border: 1px solid #E2E8F0;
+  border-left: 5px solid;
+  background: #F8FAFC;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+
+.vaccine-item.completed {
+  border-left-color: #10B981;
+  background-color: #F0FDF4; /* Light green tint */
+}
+
+.vaccine-item.upcoming {
+  border-left-color: #F59E0B;
+  background-color: #FFFBEB; /* Light yellow tint */
+}
+
+/* Prescriptions */
+.prescription-form-card {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 16px;
+  padding: 25px;
+}
+
+.prescription-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+.prescription-table th {
+  padding: 15px;
+  color: #64748B;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #E2E8F0;
+}
+
+.prescription-table td {
+  padding: 15px;
+  background: white;
+  color: #1E293B;
+  font-weight: 600;
+}
+
+.prescription-table tr td:first-child {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+
+.prescription-table tr td:last-child {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.prescription-table tr {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+  transition: transform 0.2s ease;
+}
+
+.prescription-table tr:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.04);
+}
+
+.session-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  background: #E0FBFC;
+  color: #0077B6;
+}
+
+.action-btn {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.btn-edit-med {
+  background: #FFFBEB;
+  color: #D97706;
+}
+
+.btn-edit-med:hover {
+  background: #FEF3C7;
+  color: #B45309;
+}
+
+.btn-del-med {
+  background: #FEF2F2;
+  color: #EF4444;
+}
+
+.btn-del-med:hover {
+  background: #FEE2E2;
+  color: #DC2626;
 }

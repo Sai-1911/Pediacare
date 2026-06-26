@@ -1,101 +1,258 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
 
-.home-com{
-  
-    padding: 20px;
-}
-.book-banner{
-    background-color: rgba(112, 195, 226, 0.658);
-    
-}
- 
-.vaccination-reminder{
-    background-color: rgba(112, 195, 226, 0.658);
-}
- 
-.caro-img{
-    width: 50%;
-    height: 50%;
-}
-.carousel-banner{
-    align-items: center;
-    justify-content: space-evenly;
-    background-color: rgba(112, 195, 226, 0.658);
-    height: 35vh; 
-   
-}
-.carousel-banner p{
-    text-decoration: underline;
-   
-    color: rgb(4, 4, 71);
-}
-.carousel-banner nav{
-    position: absolute ;
-    right: 10%;
-    color: rgb(4, 4, 71);
+:root {
+  --primary-color: #00B4D8;
+  --primary-dark: #0077B6;
+  --accent-color: #FFB703;
+  --bg-color: #F8F9FA;
+  --card-bg: #FFFFFF;
+  --text-primary: #2B2D42;
+  --text-secondary: #8D99AE;
+  --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.12);
+  --radius-md: 16px;
+  --radius-lg: 24px;
 }
 
-.carousel-banner img{
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto; /* Automatically adjust margins to center */
-    width: 20%; /* Example width */
-    height: auto;
+.home-com {
+  font-family: 'Nunito', sans-serif;
+  background-color: var(--bg-color);
+  padding: 40px 20px;
+  min-height: 100vh;
+  color: var(--text-primary);
 }
-@media only screen and (max-width: 800px) {
-    .carousel-banner{
-        align-items: center;
-        background-color: rgba(112, 195, 226, 0.658);
-        height: 20vh;
- 
-    }
-    .carousel-banner h1{
-font-size: 20px;
-    }
-    .carousel-banner h2{
-font-size: 15px;
-    }
-    .carousel-banner img{
-        width: 35%;
-        height: 90%;
-        margin-top: auto;
-        bottom: 0;
-    }
-  }
-  .diet-ref {
-    height: 40vh;
-    
-    background-color: rgba(112, 195, 226, 0.658);
-  }
-  .diet-ref img{
-    height: 60%;
-    width: 70%;
-  }
-  .priscription-ref{
-    height: 40vh;
-    background-color: rgba(112, 195, 226, 0.658);
-  }
-  .priscription-ref img{
-    height: 60%;
-    width: 70%;
-  }
-@media only screen and (max-width: 900px) {
-    .carousel-banner{
-        align-items: center;
-        background-color: rgba(112, 195, 226, 0.658);
-        height: 20vh;
- 
-    }
-    .carousel-banner h1{
-font-size: 25px;
-    }
-    .carousel-banner img{
-        width: 25%;
-        height: 90%;
-        margin-top: auto;
-        bottom: 0;
-    }
-  }
- 
+
+/* Hero Banner */
+.hero-banner {
+  background: linear-gradient(135deg, #E0FBFC 0%, #98C1D9 100%);
+  border-radius: var(--radius-lg);
+  padding: 60px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content {
+  flex: 1;
+  z-index: 2;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: var(--primary-dark);
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  font-size: 1.2rem;
+  color: #334155;
+  margin-bottom: 30px;
+}
+
+.hero-image {
+  flex: 1;
+  max-width: 400px;
+  z-index: 2;
+}
+
+.btn-custom-primary {
+  background-color: var(--accent-color);
+  color: #fff;
+  font-weight: 700;
+  padding: 12px 32px;
+  border-radius: 50px;
+  border: none;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 183, 3, 0.4);
+}
+
+.btn-custom-primary:hover {
+  background-color: #fb8500;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 183, 3, 0.5);
+  color: #fff;
+}
+
+.patient-id-badge {
+  display: inline-block;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 8px 20px;
+  border-radius: 50px;
+  font-weight: 600;
+  color: var(--primary-dark);
+  margin-top: 20px;
+  backdrop-filter: blur(5px);
+}
+
+/* Cards (Book Slot & Vaccination) */
+.modern-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  height: 100%;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0,0,0,0.03);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.modern-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-md);
+}
+
+.card-icon-wrapper {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.bg-blue-light { background: #E0FBFC; color: var(--primary-dark); }
+.bg-orange-light { background: #FFF3CD; color: #fb8500; }
+
+.modern-card h3 {
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: var(--text-primary);
+}
+
+.modern-card p {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+.vaccination-alert {
+  background-color: #fff0f3;
+  color: #d90429;
+  padding: 15px;
+  border-radius: var(--radius-md);
+  margin-bottom: 20px;
+  border-left: 5px solid #d90429;
+}
+
+.vaccination-alert h4 {
+  margin: 0 0 5px 0;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.vaccination-alert p {
+  margin: 0;
+  color: #ef233c;
+  font-size: 0.95rem;
+}
+
+/* Carousel Adjustments */
+.carousel-wrapper {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  height: 100%;
+}
+
+.carousel-inner, .carousel-item, .carousel-item img {
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Services Grid */
+.service-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(0,0,0,0.03);
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.service-img-container {
+  height: 200px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8fafc;
+}
+
+.service-img-container img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.service-card-body {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.service-card-body h5 {
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin-bottom: 15px;
+  color: var(--text-primary);
+}
+
+.service-card-body p {
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+  flex-grow: 1;
+}
+
+.btn-outline-primary-custom {
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+  background: transparent;
+  padding: 10px 24px;
+  border-radius: 50px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-primary-custom:hover {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+/* Responsiveness */
+@media (max-width: 991px) {
+  .hero-title { font-size: 2.5rem; }
+  .hero-banner { flex-direction: column; text-align: center; padding: 40px 20px; }
+  .hero-image { max-width: 300px; margin-top: 30px; }
+  .patient-id-badge { margin: 20px auto 0 auto; display: block; width: fit-content; }
+}
+
+@media (max-width: 768px) {
+  .hero-title { font-size: 2rem; }
+  .home-com { padding: 20px 10px; }
+  .carousel-wrapper { margin-bottom: 30px; height: 250px; }
+}

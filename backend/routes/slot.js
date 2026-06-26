@@ -1,5 +1,5 @@
 const express = require('express');
-const { bookSlot, checkSlotAvailability,markSlotAsDone, getBookedSlots,getAllSlotsForUser, getRecentSlot,getAppointmentDetails,getAllBookedSlotsForDate } = require('../controllers/slot');
+const { bookSlot, checkSlotAvailability,markSlotAsDone, getBookedSlots,getAllSlotsForUser, getRecentSlot,getAppointmentDetails,getAllBookedSlotsForDate, createSchedule, getDashboardStats } = require('../controllers/slot');
 
 const router = express.Router();
 
@@ -11,4 +11,7 @@ router.get('/userslots',getAllSlotsForUser );
 router.get('/getbookedslot',getAllBookedSlotsForDate);
 router.get('/recentSlot',getRecentSlot);
 router.get('/getAppointment', getAppointmentDetails)
+router.post('/createSchedule', createSchedule);
+router.get('/dashboardStats', getDashboardStats);
+
 module.exports = router;

@@ -18,11 +18,12 @@ function Login() {
     }
   
     try {
-      const response = await fetch("http://localhost:8000/patient/login", {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/patient/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({ identifier, password }),
       });
   
@@ -42,42 +43,41 @@ function Login() {
   };
   
   return (
-    <div className="container my-4">
-      <div className="text-center log-banner mx-auto bg-dark">
-        <h1 className="text-light">Login</h1>
-        <form onSubmit={handleLogin} className="h-75 p-3 w-75 rounded border mx-auto">
+    <div className="container d-flex justify-content-center align-items-center" style={{minHeight: '80vh'}}>
+      <div className="text-center log-banner">
+        <h1>Welcome Back</h1>
+        <form onSubmit={handleLogin}>
           <input
-            className="p-2 auth-input w-100"
+            className="auth-input"
             onChange={(e) => setIdentifier(e.target.value)}
             type="text"
             value={identifier}
-            placeholder="Enter email or mobile"
+            placeholder="Email or Mobile Number"
           />
-          <br />
           <input
-            className="p-2 auth-input w-100"
+            className="auth-input"
             onChange={(e) => setPassword(e.target.value)}
             type={showPassword ? "text" : "password"}
             value={password}
-            placeholder="Enter password"
+            placeholder="Password"
           />
-          <br />
-          <div className="d-flex align-items-center w-100">
+          <div className="d-flex align-items-center" style={{gap: '10px'}}>
             <input
-              className="mx-3 check-input"
+              className="check-input"
               type="checkbox"
+              id="showPassword"
               onChange={() => setShowPassword(!showPassword)}
             />
-            <p className="lh text-light">Show password</p>
+            <label htmlFor="showPassword" style={{color: '#64748b', margin: 0, cursor: 'pointer'}}>Show password</label>
           </div>
-          <button type="submit" className="btn btn-primary mx-auto w-50 text-light">
+          <button type="submit" className="btn-auth-primary w-100 mt-2">
             Login
           </button>
-          {error && <p className="text-danger mt-3">{error}</p>}
-          <p className="text-light">
-            If you don't have an Account?{" "}
-            <Link to="/Signup" className="text-danger">
-              Signup
+          {error && <p className="text-danger mt-3 mb-0 fw-bold">{error}</p>}
+          <p className="mt-3 mb-0" style={{color: '#64748b'}}>
+            Don't have an account?{" "}
+            <Link to="/Signup" style={{color: '#FFB703', fontWeight: '700', textDecoration: 'none'}}>
+              Sign up
             </Link>
           </p>
         </form>

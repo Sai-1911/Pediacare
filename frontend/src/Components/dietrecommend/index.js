@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import "bootstrap-icons/font/bootstrap-icons.css";
+import './index.css';
 
 function DietRecommend() {
   const [patientNo, setPatientNo] = useState('');
@@ -10,6 +12,22 @@ function DietRecommend() {
     eveningSnack: [''],
     dinner: [''],
   });
+
+  const mealIcons = {
+    breakfast: 'bi-brightness-alt-high icon-breakfast',
+    midMorningSnack: 'bi-cup-hot icon-midMorningSnack',
+    lunch: 'bi-sun icon-lunch',
+    eveningSnack: 'bi-cup-straw icon-eveningSnack',
+    dinner: 'bi-moon-stars icon-dinner'
+  };
+
+  const mealTitles = {
+    breakfast: 'Breakfast',
+    midMorningSnack: 'Mid-Morning Snack',
+    lunch: 'Lunch',
+    eveningSnack: 'Evening Snack',
+    dinner: 'Dinner'
+  };
 
   // Reset meals when patientNo changes
   useEffect(() => {
@@ -50,9 +68,8 @@ function DietRecommend() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     try {
-      const response = await axios.post('http://localhost:8000/diet/addOrUpdateDiet', {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/diet/addOrUpdateDiet`, {
         patientNo,
         breakfast: meals.breakfast,
         midMorningSnack: meals.midMorningSnack,
@@ -62,91 +79,124 @@ function DietRecommend() {
       });
       alert(response.data.message); // Alert on success
     } catch (error) {
-      alert('Error: ' + error.response?.data?.error || 'Something went wrong');
+      alert('Error: ' + (error.response?.data?.error || 'Something went wrong'));
     }
     setPatientNo("");
   };
 
   return (
-    <div className="container border text-center">
-      <h3 className="mx-auto">Recommend The Diet for the Patient</h3>
-      <form className="w-75 mx-auto border" onSubmit={handleSubmit}>
-        <div className="input-group w-50 mx-auto flex-nowrap my-4">
-          <span className="input-group-text" id="addon-wrapping">
-            <i className="bi text-dark bi-search"></i>
-          </span>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Enter patient ID"
-            aria-label="Username"
-            aria-describedby="addon-wrapping"
-            value={patientNo}
-            onChange={(e) => setPatientNo(e.target.value)}
-          />
+    <div className="diet-container">
+      <div className="diet-wrapper">
+        
+        {/* Diet Form Card */}
+        <div className="diet-card">
+          <div className="diet-header">
+            <h2><i className="bi bi-journal-medical"></i> Recommend Patient Diet</h2>
+            <p>Create a custom meal plan for a specific patient by entering their ID.</p>
+          </div>
+
+          <form onSubmit={handleSubmit}>
+            <div className="patient-input-group">
+              <label>Patient ID Number</label>
+              <i className="bi bi-search"></i>
+              <input
+                type="text"
+                className="custom-input"
+                placeholder="e.g. PAT-12345"
+                value={patientNo}
+                onChange={(e) => setPatientNo(e.target.value)}
+                required
+              />
+            </div>
+
+            <div className="meal-grid">
+              {Object.keys(meals).map((mealType) => (
+                <div key={mealType} className="meal-box">
+                  <div className="meal-box-header">
+                    <h5>
+                      <i className={`bi ${mealIcons[mealType]}`}></i>
+                      {mealTitles[mealType]}
+                    </h5>
+                    <button 
+                      type="button" 
+                      className="btn-add-dish" 
+                      onClick={() => addDish(mealType)}
+                      title="Add Dish"
+                    >
+                      <i className="bi bi-plus-lg"></i>
+                    </button>
+                  </div>
+                  
+                  <div className="dish-list">
+                    {meals[mealType].map((dish, index) => (
+                      <div className="dish-input-row" key={index}>
+                        <input
+                          type="text"
+                          className="dish-input"
+                          placeholder="e.g. Oatmeal with fruits"
+                          value={dish}
+                          onChange={(e) => handleDishChange(mealType, index, e.target.value)}
+                        />
+                        {meals[mealType].length > 1 && (
+                          <button
+                            type="button"
+                            className="btn-remove-dish"
+                            onClick={() => removeDish(mealType, index)}
+                            title="Remove Dish"
+                          >
+                            <i className="bi bi-trash"></i>
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="submit-btn-container">
+              <button type="submit" className="submit-btn">
+                <i className="bi bi-send-check"></i> Save Meal Plan
+              </button>
+            </div>
+          </form>
         </div>
 
-        {/* Meal Types: Iterate over each meal type */}
-        {['breakfast', 'midMorningSnack', 'lunch', 'eveningSnack', 'dinner'].map((mealType) => (
-          <div key={mealType}>
-            <div className="w-50 mx-auto text-center">
-              <p className="fs-4">Add dish for {mealType.replace(/([A-Z])/g, ' $1')} 
-                <i className="text-dark bi bi-plus-circle" onClick={() => addDish(mealType)}></i>
-              </p>
-            </div>
-            {meals[mealType].map((dish, index) => (
-              <div className="input-group w-50 mx-auto flex-nowrap" key={index}>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder={`Add dish for ${mealType}`}
-                  value={dish}
-                  onChange={(e) => handleDishChange(mealType, index, e.target.value)}
-                />
-                {meals[mealType].length > 1 && (
-                  <button
-                    type="button"
-                    className="btn btn-danger"
-                    onClick={() => removeDish(mealType, index)}
-                  >
-                    <i className="bi bi-trash"></i>
-                  </button>
-                )}
-              </div>
-            ))}
+        {/* Preview Table Card */}
+        <div className="diet-card preview-card">
+          <div className="diet-header" style={{ marginBottom: '24px' }}>
+            <h2><i className="bi bi-eye"></i> Meal Plan Preview</h2>
           </div>
-        ))}
+          
+          <div className="preview-table-container">
+            <table className="modern-table">
+              <thead>
+                <tr>
+                  {Object.keys(meals).map(mealType => (
+                    <th key={mealType}>{mealTitles[mealType]}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  {Object.keys(meals).map((mealType) => (
+                    <td key={mealType}>
+                      <ul>
+                        {meals[mealType].map((dish, index) => (
+                          <li key={index}>
+                            {dish || <em style={{opacity: 0.5}}>Empty</em>}
+                          </li>
+                        ))}
+                      </ul>
+                    </td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
 
-        <button type="submit" className="btn btn-primary mt-4">
-          Submit
-        </button>
-
-        {/* Display the meals and dishes in a table format */}
-        <table className="border mx-auto my-3">
-          <thead>
-            <tr>
-              <th className="border p-3">Breakfast</th>
-              <th className="border p-3">Mid-Morning Snack</th>
-              <th className="border p-3">Lunch</th>
-              <th className="border p-3">Evening Snack</th>
-              <th className="border p-3">Dinner</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              {['breakfast', 'midMorningSnack', 'lunch', 'eveningSnack', 'dinner'].map((mealType) => (
-                <td key={mealType} className="border p-3">
-                  <ul>
-                    {meals[mealType].map((dish, index) => (
-                      <li key={index}>{dish}</li>
-                    ))}
-                  </ul>
-                </td>
-              ))}
-            </tr>
-          </tbody>
-        </table>
-      </form>
+      </div>
     </div>
   );
 }

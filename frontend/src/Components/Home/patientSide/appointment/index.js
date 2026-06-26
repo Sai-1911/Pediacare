@@ -1,44 +1,46 @@
 import React, { useState, useEffect } from "react";
+import "bootstrap-icons/font/bootstrap-icons.css";
 import "./index.css";
 
 function Appointment() {
-  const [appointments, setAppointments] = useState([]); // Stores all fetched appointments
-  const [selectedAppointment, setSelectedAppointment] = useState(null); // Stores selected appointment
+  const [appointments, setAppointments] = useState([]);
+  const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
         const userData = JSON.parse(localStorage.getItem("user"));
         if (!userData || !userData._id) {
-          throw new Error("User ID not found in localStorage.");
+          throw new Error("User session not found. Please log in again.");
         }
 
         const parentId = userData._id;
-        console.log("Fetching recent appointments for pId:", parentId);
 
         const response = await fetch(
-          `http://localhost:8000/slot/recentSlot?pId=${parentId}`
+          `${process.env.REACT_APP_API_URL}/slot/recentSlot?pId=${parentId}`
         );
 
         if (!response.ok) {
-          throw new Error(`HTTP Error: ${response.status}`);
+          throw new Error(`Unable to fetch appointments (Error ${response.status})`);
         }
 
         let data = await response.json();
-        console.log("Fetched Appointments:", data);
-
-        data.reverse(); // ✅ Reverse the order to show the latest first
+        
+        data.reverse(); // Show the latest first
 
         setAppointments(data);
         if (data.length > 0) {
-          setSelectedAppointment(data[0]); // ✅ Default to the most recent appointment
+          setSelectedAppointment(data[0]); // Default to the most recent appointment
         } else {
-          setError("No recent appointments found.");
+          setError("You have no recent appointments.");
         }
       } catch (err) {
         console.error("Fetch error:", err);
-        setError("Failed to fetch appointments.");
+        setError(err.message || "Failed to fetch appointments. Please try again later.");
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -46,71 +48,123 @@ function Appointment() {
   }, []);
 
   return (
-    <div className="container row mx-auto text-center">
-      {/* Left Side: Appointment Details */}
-      <div className="col-6">
-        <h1>Appointment Details</h1>
-        {error && <p className="text-danger">{error}</p>}
-        <div className="mx-auto border card bg-dark">
-          <div className="card-body">
-            <form className="mx-auto bg-secondary p-2 rounded">
-              <div className="input-group mb-3">
-                <span className="input-group-text">Appointment ID</span>
-                <input type="text" className="form-control" value={selectedAppointment?.appId || ""} disabled />
+    <div className="appointments-container">
+      <div className="appointments-wrapper">
+        {/* Left Side: Appointment List */}
+        <div className="appointment-list-col">
+          <h2 className="section-title">
+            <i className="bi bi-calendar-check"></i> My Appointments
+          </h2>
+          
+          {error && <div className="error-message"><i className="bi bi-exclamation-triangle-fill"></i> {error}</div>}
+          
+          {loading ? (
+            <div className="empty-state">
+              <div className="spinner-border text-primary" role="status">
+                <span className="visually-hidden">Loading...</span>
               </div>
-              <div className="input-group mb-3">
-                <span className="input-group-text">Service Type</span>
-                <input type="text" className="form-control" value={selectedAppointment?.service || ""} disabled />
-              </div>
-              <div className="input-group mb-3">
-                <span className="input-group-text">Child Name</span>
-                <input type="text" className="form-control" value={selectedAppointment?.name || ""} disabled />
-              </div>
-              <div className="input-group mb-3">
-                <span className="input-group-text">Caretaker Name</span>
-                <input type="text" className="form-control" value={selectedAppointment?.parentName || ""} disabled />
-              </div>
-              <div className="input-group mb-3">
-                <span className="input-group-text">Age</span>
-                <input type="text" className="form-control" value={selectedAppointment?.age || ""} disabled />
-              </div>
-              <div className="input-group mb-3">
-                <span className="input-group-text">Session</span>
-                <input type="text" className="form-control" value={selectedAppointment?.session || ""} disabled />
-              </div>
-              <div className="input-group mb-3">
-                <span className="input-group-text">Timing</span>
-                <input type="text" className="form-control" value={selectedAppointment?.slot || ""} disabled />
-              </div>
-              <div className="input-group mb-3">
-                <span className="input-group-text">Appointment Date</span>
-                <input type="text" className="form-control" value={selectedAppointment?.date || ""} disabled />
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-
-      {/* Right Side: Appointment List */}
-      <div className="col-6 my-1 border text-center">
-        <h1>Appointment List</h1>
-        <div className="card bg-dark text-dark">
-          {appointments.length > 0 ? (
-            appointments.map((appointment) => (
-              <div
-                key={appointment.appId}
-                className={`d-flex justify-content-evenly w-75 mx-auto my-2 rounded p-1 ${
-                  selectedAppointment?.appId === appointment.appId ? "bg-info" : "bg-light"
-                }`}
-                onClick={() => setSelectedAppointment(appointment)} // ✅ Click to update details
-                style={{ cursor: "pointer" }}
-              >
-                <p className="lh-1"><strong className="text-danger">App Id:</strong> {appointment.appId}</p>
-                <p className="lh-1"><strong className="text-danger">Date:</strong> {appointment.date}</p>
-              </div>
-            ))
+              <p className="mt-3">Loading your schedule...</p>
+            </div>
+          ) : appointments.length > 0 ? (
+            <div className="d-flex flex-column gap-3">
+              {appointments.map((appointment, index) => (
+                <div
+                  key={appointment.appId}
+                  className={`appointment-card animate-fade-in ${
+                    selectedAppointment?.appId === appointment.appId ? "active" : ""
+                  }`}
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                  onClick={() => setSelectedAppointment(appointment)}
+                >
+                  <span className="apt-id">ID: {appointment.appId}</span>
+                  <div className="apt-date">
+                    <i className="bi bi-calendar-event"></i> {appointment.date}
+                  </div>
+                </div>
+              ))}
+            </div>
           ) : (
-            <p>No Appointments Found</p>
+            !error && (
+              <div className="empty-state animate-fade-in">
+                <i className="bi bi-calendar-x"></i>
+                <p>No appointments found</p>
+              </div>
+            )
+          )}
+        </div>
+
+        {/* Right Side: Appointment Details */}
+        <div className="appointment-detail-col animate-fade-in">
+          {selectedAppointment ? (
+            <>
+              <div className="detail-header">
+                <h2>Appointment Details</h2>
+                <p>Review the specific information regarding your scheduled visit.</p>
+              </div>
+              
+              <div className="detail-grid">
+                <div className="detail-item">
+                  <div className="detail-label">
+                    <i className="bi bi-hash"></i> Appointment ID
+                  </div>
+                  <div className="detail-value">{selectedAppointment.appId || "N/A"}</div>
+                </div>
+
+                <div className="detail-item">
+                  <div className="detail-label">
+                    <i className="bi bi-clipboard2-pulse"></i> Service Type
+                  </div>
+                  <div className="detail-value">{selectedAppointment.service || "N/A"}</div>
+                </div>
+
+                <div className="detail-item">
+                  <div className="detail-label">
+                    <i className="bi bi-person-badge"></i> Child Name
+                  </div>
+                  <div className="detail-value">{selectedAppointment.name || "N/A"}</div>
+                </div>
+
+                <div className="detail-item">
+                  <div className="detail-label">
+                    <i className="bi bi-person-hearts"></i> Caretaker Name
+                  </div>
+                  <div className="detail-value">{selectedAppointment.parentName || "N/A"}</div>
+                </div>
+
+                <div className="detail-item">
+                  <div className="detail-label">
+                    <i className="bi bi-calendar-date"></i> Age
+                  </div>
+                  <div className="detail-value">{selectedAppointment.age ? `${selectedAppointment.age} Yrs` : "N/A"}</div>
+                </div>
+
+                <div className="detail-item">
+                  <div className="detail-label">
+                    <i className="bi bi-sun"></i> Session
+                  </div>
+                  <div className="detail-value">{selectedAppointment.session || "N/A"}</div>
+                </div>
+
+                <div className="detail-item">
+                  <div className="detail-label">
+                    <i className="bi bi-clock"></i> Timing
+                  </div>
+                  <div className="detail-value">{selectedAppointment.slot || "N/A"}</div>
+                </div>
+
+                <div className="detail-item">
+                  <div className="detail-label">
+                    <i className="bi bi-calendar-day"></i> Appointment Date
+                  </div>
+                  <div className="detail-value">{selectedAppointment.date || "N/A"}</div>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="empty-state">
+              <i className="bi bi-file-earmark-medical"></i>
+              <p>Select an appointment to view details</p>
+            </div>
           )}
         </div>
       </div>

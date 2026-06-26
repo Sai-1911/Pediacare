@@ -13,7 +13,7 @@ function Slots() {
     const fetchSlots = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:8000/slot/getbookedslot?date=${date}`);
+        const response = await axios.get(`${process.env.REACT_APP_API_URL}/slot/getbookedslot?date=${date}`);
         setSlots(response.data.slots);
         setLoading(false);
       } catch (err) {
@@ -26,34 +26,63 @@ function Slots() {
   }, [date]);
 
   return (
-    <div className="container border mx-auto">
-      <div className="w-75 text-light mx-auto border d-flex justify-content-evenly bg-secondary p-2">
-        <h3>Slots for Today</h3>
-        <h3>Date: {date}</h3>
+    <div className="container py-5" style={{fontFamily: "'Nunito', sans-serif"}}>
+      <div className="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom border-2">
+        <h2 className="fw-bold" style={{color: '#0077B6'}}>Today's Schedule</h2>
+        <div className="bg-light px-4 py-2 rounded-pill shadow-sm">
+          <span className="fw-bold text-secondary me-2">Date:</span>
+          <span className="text-primary fw-bold">{date}</span>
+        </div>
       </div>
 
-      <div className="w-75 mx-auto border bg-dark text-light">
+      <div className="modern-card p-4">
         {loading ? (
-          <div className="text-center p-4">Loading slots...</div>
-        ) : error ? (
-          <div className="text-center text-danger p-4">{error}</div>
-        ) : slots.length > 0 ? (
-          slots.map((slot,i) => (
-            <div
-            key={slot._id}
-            className={`p-2 border my-2 d-flex justify-content-between slot-display rounded mx-auto ${slot.done ? 'bg-success' : ''}`}
-          >
-            <h2>{i+1}</h2>
-            <p><strong className='text-danger'>Appointment Id:</strong> {slot.appId}</p>
-            <p><strong className='text-danger'>Timing:</strong> {slot.slot}</p>
-            <p><strong className='text-danger'>Session:</strong> {slot.session}</p>
-            <p><strong className='text-danger'>Service:</strong> {slot.service}</p>
-            <p><strong className='text-danger'>Name:</strong> {slot.name} ({slot.parentName})</p>
+          <div className="text-center p-5">
+            <div className="spinner-border text-primary mb-3" role="status"></div>
+            <h5 className="text-secondary">Loading slots...</h5>
           </div>
-          
-          ))
+        ) : error ? (
+          <div className="alert alert-danger shadow-sm border-0" role="alert">
+            <i className="bi bi-exclamation-triangle-fill me-2"></i>
+            {error}
+          </div>
+        ) : slots.length > 0 ? (
+          <div className="d-flex flex-column gap-3">
+            {slots.map((slot, i) => (
+              <div
+                key={slot._id}
+                className={`p-3 rounded-4 shadow-sm border-start border-4 ${
+                  slot.done ? 'border-success bg-success bg-opacity-10' : 'border-primary bg-white'
+                }`}
+                style={{transition: 'transform 0.2s ease', cursor: 'pointer'}}
+                onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
+                onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+              >
+                <div className="d-flex justify-content-between align-items-center flex-wrap">
+                  <div className="d-flex align-items-center gap-4">
+                    <h3 className="mb-0 text-muted" style={{width: '30px'}}>#{i + 1}</h3>
+                    <div>
+                      <h5 className="mb-1 fw-bold text-dark">{slot.name} <small className="text-muted fw-normal">({slot.parentName})</small></h5>
+                      <div className="d-flex gap-3 text-secondary" style={{fontSize: '0.9rem'}}>
+                        <span><i className="bi bi-clock-fill me-1 text-primary"></i> {slot.slot} ({slot.session})</span>
+                        <span><i className="bi bi-bookmark-fill me-1 text-warning"></i> {slot.service}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="text-end mt-2 mt-md-0">
+                    <span className="badge bg-light text-secondary border px-3 py-2 rounded-pill">ID: {slot.appId}</span>
+                    {slot.done && <span className="badge bg-success ms-2 px-3 py-2 rounded-pill"><i className="bi bi-check-circle-fill me-1"></i>Completed</span>}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         ) : (
-          <div className="text-center p-4">No slots booked for today.</div>
+          <div className="text-center p-5 bg-light rounded-4">
+            <i className="bi bi-calendar-x text-muted" style={{fontSize: '3rem'}}></i>
+            <h4 className="mt-3 text-secondary">No Appointments Today</h4>
+            <p className="text-muted">You have a clear schedule for the selected date.</p>
+          </div>
         )}
       </div>
     </div>

@@ -1,6 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Nunito:wght@400;600;700;800&family=Yeseva+One&display=swap');
  
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Yeseva+One&display=swap');
- 
- *{
+* {
+  font-family: "Nunito", sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, .brand-logo {
   font-family: "Outfit", sans-serif;
- }
+}
+
+/* Global Modern UI Utility Classes */
+
+.modern-card {
+  background: #FFFFFF;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.02);
+}
+
+.modern-card:hover {
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.08);
+}
+
+.bg-glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.text-gradient-primary {
+  background: linear-gradient(135deg, #00B4D8 0%, #0077B6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.btn-custom-primary {
+  background: linear-gradient(135deg, #00B4D8 0%, #0077B6 100%);
+  color: white !important;
+  border: none;
+  border-radius: 50px;
+  padding: 10px 25px;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.btn-custom-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 119, 182, 0.3);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1; 
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8; 
+}

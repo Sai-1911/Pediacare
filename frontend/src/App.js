@@ -15,6 +15,7 @@ import Vaccination from "./Components/vaccination/index";
 import DeitRecommend from "./Components/dietrecommend/index";
 import TermsConditions from "./Components/terms&con/index";
 import Slots from "./Components/slot/index";
+import AdminDashboard from "./Components/AdminDashboard/index";
 import { useEffect, useState } from "react";
 import './App.css';
 
@@ -62,6 +63,7 @@ function App() {
         <Route path="/diet" element={<Diet />} />
         <Route path="/Terms" element={<TermsConditions />} />
         <Route path="/slotcontrol" element={<Slots />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="*" element={<Navigate to="/Home" />} />
       </Routes>
       <Footer />

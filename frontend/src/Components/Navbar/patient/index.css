@@ -1,9 +1,78 @@
-.logo-img{
-    width: 10vh;
-    height: 10vh;
-    border-radius:50px ;
+.modern-navbar {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 10px 0;
+  transition: all 0.3s ease;
+  font-family: 'Nunito', sans-serif;
 }
-.navbar-nav .dropdown-menu {
-    z-index: 1050; /* Higher than the default Bootstrap navbar */
-    position: absolute; /* Required for z-index to take effect */
-  }
+
+.logo-img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.web-name {
+  font-weight: 800;
+  color: #0077B6;
+  font-size: 1.8rem;
+  margin: 0 15px;
+  letter-spacing: -0.5px;
+}
+
+.nav-link-custom {
+  font-weight: 600;
+  color: #2B2D42 !important;
+  font-size: 1.1rem;
+  padding: 8px 16px !important;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.nav-link-custom:hover {
+  background: #E0FBFC;
+  color: #0077B6 !important;
+}
+
+.dropdown-menu-custom {
+  border: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 10px;
+  min-width: 200px;
+}
+
+.dropdown-item-custom {
+  font-weight: 600;
+  color: #2B2D42;
+  padding: 10px 15px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.dropdown-item-custom:hover {
+  background: #E0FBFC;
+  color: #0077B6;
+}
+
+.patient-name-badge {
+  background: #E0FBFC;
+  color: #0077B6;
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+
+.navbar-toggler {
+  border: none;
+  outline: none;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}

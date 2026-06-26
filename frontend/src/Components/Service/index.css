@@ -1,47 +1,92 @@
- .service-banner{
-    margin-top: 20px;
-    height: 35vh; 
-    border-radius: 10px; 
-    
- }
- .service-banner h1{
-    
-    top: 70%;
-    left: 40%;
-    margin-top: -50px; /* Negative half of image height */
-    margin-left: -50px; /* Negative half of image width */
-    /* Example fixed size */
-    height: 100px;
- }
- .service-switch{
-    height: 70vh;
-    border-right: 3px solid black;
- }
- .slots{
-   width: 80%;
- }
- .service-switch{
-   display: flex;
-   justify-content: space-evenly;
-   flex-direction: column;
- }
- .service-switch button{
-   width: 50%;
- }
-  .submit{
-  width: 35%;
- }
- .date-picker{
-  width: 75%;
- }
- @media only screen and (max-width: 770px) {
-   .service-switch{
-      height: auto;
-      display: flex;
-      justify-content: space-evenly;
-      flex-direction: row;
-    }
-    .service-switch button{
-      width: 30%;
-    }
+.modern-form-container {
+  background: #FFFFFF;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+  padding: 40px;
+  font-family: 'Nunito', sans-serif;
+  max-width: 800px;
+  margin: 40px auto;
+}
+
+.modern-form-title {
+  color: #0077B6;
+  font-weight: 800;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.modern-input-group {
+  margin-bottom: 20px;
+}
+
+.modern-label {
+  font-weight: 700;
+  color: #2B2D42;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.modern-input, .modern-select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #E2E8F0;
+  border-radius: 12px;
+  font-size: 1rem;
+  color: #2B2D42;
+  background-color: #F8F9FA;
+  transition: all 0.3s ease;
+}
+
+.modern-input:focus, .modern-select:focus {
+  outline: none;
+  border-color: #00B4D8;
+  background-color: #FFFFFF;
+  box-shadow: 0 0 0 4px rgba(0, 180, 216, 0.1);
+}
+
+.slot-btn {
+  border: 2px solid #E2E8F0;
+  background: white;
+  color: #2B2D42;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 10px 20px;
+  transition: all 0.2s ease;
+}
+
+.slot-btn:hover {
+  border-color: #00B4D8;
+  background: #E0FBFC;
+  color: #0077B6;
+}
+
+.slot-btn.selected {
+  background: #00B4D8;
+  border-color: #00B4D8;
+  color: white;
+  box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
+}
+
+.btn-book-primary {
+  background: linear-gradient(135deg, #00B4D8 0%, #0077B6 100%);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 15px 40px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.btn-book-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 119, 182, 0.3);
+  color: white;
+}
+
+/* Ensure React DatePicker looks good */
+.react-datepicker-wrapper {
+  width: 100%;
 }
