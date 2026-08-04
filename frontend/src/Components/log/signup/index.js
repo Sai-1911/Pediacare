@@ -37,6 +37,7 @@ function Signup() {
   
         if (response.ok) {
           localStorage.setItem("user", JSON.stringify(data));
+          window.dispatchEvent(new Event("storage"));
           setSuccess("Signup Successful!");
           setError("");
           setEmail("");

@@ -8,6 +8,7 @@ const medicineRoutes = require('./routes/medicine');
 const slotRoutes = require('./routes/slot'); 
 const vaccinationRotes=require('./routes/vaccination');
 const dietRoutes=require('./routes/diet');
+const chatRoutes = require('./routes/chat');
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use('/slot', slotRoutes);
 app.use('/vaccination',vaccinationRotes);
 app.use('/medicine', medicineRoutes);
 app.use('/diet',dietRoutes);
+app.use('/chat', chatRoutes);
 
 // Start Server
 const port = process.env.PORT || 8000;

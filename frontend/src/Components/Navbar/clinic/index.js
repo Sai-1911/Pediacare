@@ -1,33 +1,44 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState, useCallback } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Logo from "./img/PediaCare.png";
 import "./index.css";
 
 function CNavbar() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [childName, setChildName] = useState("");
 
-  useEffect(() => {
+  const checkAuth = useCallback(() => {
     try {
-      const bookDet = JSON.parse(localStorage.getItem("bookedDetails"));
       const user = JSON.parse(localStorage.getItem("user"));
       if (user) {
         setIsLoggedIn(true);
-        setChildName(user.childName);
+        setChildName(user.name || user.childName || "Clinic");
       } else {
         setIsLoggedIn(false);
+        setChildName("");
       }
     } catch (error) {
       console.error("Error parsing data from localStorage:", error);
+      setIsLoggedIn(false);
+      setChildName("");
     }
   }, []);
+
+  useEffect(() => {
+    checkAuth();
+    window.addEventListener("storage", checkAuth);
+    return () => {
+      window.removeEventListener("storage", checkAuth);
+    };
+  }, [location.pathname, checkAuth]);
   
   const handleLogout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("id");
     window.dispatchEvent(new Event("storage")); // Trigger storage event to refresh
-    navigate("/login");
+    navigate("/Login");
   };
   
 

@@ -16,6 +16,7 @@ import DeitRecommend from "./Components/dietrecommend/index";
 import TermsConditions from "./Components/terms&con/index";
 import Slots from "./Components/slot/index";
 import AdminDashboard from "./Components/AdminDashboard/index";
+import Chatbot from "./Components/Chatbot/index";
 import { useEffect, useState } from "react";
 import './App.css';
 
@@ -67,6 +68,7 @@ function App() {
         <Route path="*" element={<Navigate to="/Home" />} />
       </Routes>
       <Footer />
+      {!isClinicUser && <Chatbot />}
     </Router>
   );
 }
