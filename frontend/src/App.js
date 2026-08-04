@@ -26,7 +26,7 @@ function App() {
 
   const checkUser = () => {
     const user = JSON.parse(localStorage.getItem("user"));
-    if (user?.email === "clinic@gmail.com") {
+    if (user?.email?.toLowerCase() === "clinic@gmail.com") {
       setIsClinicUser(true);
     } else {
       setIsClinicUser(false);

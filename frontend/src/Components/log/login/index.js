@@ -32,7 +32,7 @@ function Login() {
       if (response.ok) {
         localStorage.setItem("user", JSON.stringify(data.user));
         window.dispatchEvent(new Event("storage"));
-        navigate("/home");
+        navigate("/Home");
       } else {
         setError(data.error || "Login failed. Please try again.");
       }

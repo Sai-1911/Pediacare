@@ -64,7 +64,9 @@ const signup = async (req, res) => {
     res.status(201).json({
       _id: newPatient._id,
       patientNo: newPatient.patientNo,
-      name: newPatient.name
+      name: newPatient.name,
+      email: newPatient.email,
+      mobile: newPatient.mobile
     });
   } catch (error) {
     console.error('Signup error:', error.message); // Log the error message
@@ -122,7 +124,9 @@ const login = async (req, res) => {
       user: {
         _id: user._id,
         patientNo: user.patientNo,
-        name: user.name
+        name: user.name,
+        email: user.email,
+        mobile: user.mobile
       },
     });
   } catch (error) {
