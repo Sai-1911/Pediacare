@@ -5,7 +5,6 @@ function Chome() {
   const [medicineData, setMedicineData] = useState({
     medicines: [],
   });
-  const [previousAppointment, setPreviousAppointment] = useState([]);
   const [currentMedicine, setCurrentMedicine] = useState({
     name: "",
     dose: "",
@@ -275,85 +274,18 @@ const fetchMedicines = async (appId) => {
   };
   
  
-  const handleMedicineChange = (e) => {
-    const { name, value } = e.target;
-    setCurrentMedicine((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSessionChange = (e) => {
-    const { name, checked } = e.target;
-    setCurrentMedicine((prev) => ({
-      ...prev,
-      session: { ...prev.session, [name]: checked },
-    }));
-  };
- 
-const handleEditMedicine = (index) => {
-  const medicineToEdit = medicineData.medicines[index];
-  setCurrentMedicine({
-    ...medicineToEdit,
-    session: {
-      morning: medicineToEdit.session.includes("morning"),
-      afternoon: medicineToEdit.session.includes("afternoon"),
-      night: medicineToEdit.session.includes("night"),
-    },
-  });
-  setEditingIndex(index);
-};
-const handleUpdateMedicine = async () => {
-  if (!medicineData.medicines.length) {
-    setError("No medicines to update!");
-    return;
-  }
-
-  const updatedMedicineData = {
-    appId: appointmentNumber,
-    medicines: medicineData.medicines,
-    pId: details.appointment.pId,
-  };
-
-  console.log("Updating medicines with data:", updatedMedicineData);
-
-  try {
-    const response = await fetch(
-      `${process.env.REACT_APP_API_URL}/medicine/updateMedicine/${appointmentNumber}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedMedicineData),
-      }
-    );
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Error updating medicines:", errorText);
-      throw new Error("Failed to update medicines");
-    }
-
-    console.log("Medicines updated successfully");
-    alert("Medicines updated successfully!");
-    
-    // Refresh forms after saving
-    setAppointmentNumber("");
-    setDetails({ appointment: {}, patient: {} });
-    setMedicineData({ medicines: [] });
-    setVaccinationDetails({ finished: [], upcoming: [] });
+  const handleEditMedicine = (index) => {
+    const medicineToEdit = medicineData.medicines[index];
     setCurrentMedicine({
-      name: "",
-      dose: "",
-      meal: "",
-      session: { morning: false, afternoon: false, night: false },
-      days: "",
+      ...medicineToEdit,
+      session: {
+        morning: medicineToEdit.session.includes("morning"),
+        afternoon: medicineToEdit.session.includes("afternoon"),
+        night: medicineToEdit.session.includes("night"),
+      },
     });
-    setEditingIndex(null);
-    setIsUpdate(false);
-  } catch (error) {
-    console.error("Error:", error);
-    setError(error.message);
-  }
-};
+    setEditingIndex(index);
+  };
 
 
   return (

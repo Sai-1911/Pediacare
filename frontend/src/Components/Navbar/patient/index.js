@@ -72,7 +72,7 @@ function PNavbar() {
               <div className="nav-item dropdown">
                 <a
                   className="nav-link-custom text-decoration-none dropdown-toggle d-flex align-items-center"
-                  href="#"
+                  href="#settings"
                   role="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"

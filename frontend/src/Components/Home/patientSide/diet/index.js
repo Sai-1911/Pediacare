@@ -9,7 +9,6 @@ function Diet() {
   
   useEffect(() => {
     // Retrieve patientNo from localStorage
-    const storedUser = JSON.parse(localStorage.getItem("User"));
     const patientNo = JSON.parse(localStorage.getItem("user"))?.patientNo;// Ensure we get patientNo
     console.log(patientNo);
     
@@ -121,10 +120,14 @@ function Diet() {
                       </div>
                     </div>
                   </div>
-                ) : (
+                ) : loading ? (
                   <div className="text-center p-4">
                     <div className="spinner-border text-primary mb-3" role="status"></div>
                     <p className="text-muted fw-bold">Loading your personalized diet plan...</p>
+                  </div>
+                ) : (
+                  <div className="text-center p-4">
+                    <p className="text-muted fw-bold">{error || "No personalized diet plan available yet."}</p>
                   </div>
                 )}
               </div>

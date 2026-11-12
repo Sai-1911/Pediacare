@@ -20,10 +20,10 @@ function Footer() {
               </p>
             </div>
             <div className="footer-social-icons d-lg-none mt-3">
-              <a href="#" className="social-icon"><i className="bi bi-facebook"></i></a>
-              <a href="#" className="social-icon"><i className="bi bi-youtube"></i></a>
-              <a href="#" className="social-icon"><i className="bi bi-instagram"></i></a>
-              <a href="#" className="social-icon"><i className="bi bi-twitter-x"></i></a>
+              <a href="https://facebook.com" target="_blank" rel="noreferrer" className="social-icon" aria-label="Facebook"><i className="bi bi-facebook"></i></a>
+              <a href="https://youtube.com" target="_blank" rel="noreferrer" className="social-icon" aria-label="YouTube"><i className="bi bi-youtube"></i></a>
+              <a href="https://instagram.com" target="_blank" rel="noreferrer" className="social-icon" aria-label="Instagram"><i className="bi bi-instagram"></i></a>
+              <a href="https://twitter.com" target="_blank" rel="noreferrer" className="social-icon" aria-label="Twitter"><i className="bi bi-twitter-x"></i></a>
             </div>
           </div>
 
@@ -81,10 +81,10 @@ function Footer() {
           </div>
           
           <div className="footer-social-icons d-none d-lg-flex">
-            <a href="#" className="social-icon"><i className="bi bi-facebook"></i></a>
-            <a href="#" className="social-icon"><i className="bi bi-youtube"></i></a>
-            <a href="#" className="social-icon"><i className="bi bi-instagram"></i></a>
-            <a href="#" className="social-icon"><i className="bi bi-twitter-x"></i></a>
+            <a href="https://facebook.com" target="_blank" rel="noreferrer" className="social-icon" aria-label="Facebook"><i className="bi bi-facebook"></i></a>
+            <a href="https://youtube.com" target="_blank" rel="noreferrer" className="social-icon" aria-label="YouTube"><i className="bi bi-youtube"></i></a>
+            <a href="https://instagram.com" target="_blank" rel="noreferrer" className="social-icon" aria-label="Instagram"><i className="bi bi-instagram"></i></a>
+            <a href="https://twitter.com" target="_blank" rel="noreferrer" className="social-icon" aria-label="Twitter"><i className="bi bi-twitter-x"></i></a>
           </div>
         </div>
       </div>

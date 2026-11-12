@@ -39,6 +39,7 @@ function Home() {
     if (dob) {
       calculateNextVaccine(new Date(dob));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -46,6 +47,7 @@ function Home() {
     if (user && user.dob) {
       calculateNextVaccine(new Date(user.dob));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); 
   const calculateNextVaccine = async (dob) => {
     const schedule = [

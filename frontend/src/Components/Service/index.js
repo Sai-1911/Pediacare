@@ -17,7 +17,7 @@ function Service() {
   });
   const navigate = useNavigate(); 
   const [availableSlots, setAvailableSlots] = useState([]);
-const [bookedSlots, setBookedSlots] = useState([]);
+  const [, setBookedSlots] = useState([]);
 
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [message, setMessage] = useState("");
@@ -40,6 +40,7 @@ const [bookedSlots, setBookedSlots] = useState([]);
     if (startDate && formData.session !== "Choose...") {
       fetchAvailableSlots();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startDate, formData.session]);
 
   const fetchAvailableSlots = async () => {

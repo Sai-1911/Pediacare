@@ -6,10 +6,12 @@ function Vaccination() {
   const [vaccinationData, setVaccinationData] = useState([]);
   const [completedVaccines, setCompletedVaccines] = useState([]);
   
-  const userId = JSON.parse(localStorage.getItem('user'))._id;
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const userId = user?._id;
 
   useEffect(() => {
     fetchVaccinationData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Fetch vaccination data from the backend

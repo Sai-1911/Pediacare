@@ -4,7 +4,7 @@ import axios from 'axios';
 
 function Slots() {
   const [slots, setSlots] = useState([]);
-  const [date, setDate] = useState(new Date().toISOString().split('T')[0]); // Default to today's date
+  const [date] = useState(new Date().toISOString().split('T')[0]); // Default to today's date
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
