@@ -82,18 +82,28 @@ const signup = async (req, res) => {
 const login = async (req, res) => {
   const { identifier, password } = req.body; // identifier can be email or mobile
 
+  if (!identifier || !password) {
+    return res.status(400).json({ error: 'Please enter email/mobile and password.' });
+  }
+
+  const cleanIdentifier = identifier.trim();
+
   try {
+    const escapedIdentifier = cleanIdentifier.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const user = await PatientModel.findOne({
-      $or: [{ email: identifier }, { mobile: identifier }],
+      $or: [
+        { email: { $regex: new RegExp(`^${escapedIdentifier}$`, 'i') } },
+        { mobile: cleanIdentifier },
+      ],
     });
 
-    if (!user) {
+    if (!user || !user.password) {
       return res.status(401).json({ error: 'Invalid email/mobile or password.' });
     }
 
     let isMatch = false;
-    // Check if the password is a bcrypt hash (starts with $2b$ or $2a$)
-    if (user.password.startsWith('$2b$') || user.password.startsWith('$2a$')) {
+    // Check if the password is a bcrypt hash (starts with $2b$, $2a$, or $2y$)
+    if (typeof user.password === 'string' && (user.password.startsWith('$2b$') || user.password.startsWith('$2a$') || user.password.startsWith('$2y$'))) {
       isMatch = await bcrypt.compare(password, user.password);
     } else {
       // Fallback for existing plaintext passwords

@@ -173,7 +173,7 @@ const normalizeSlotData = async () => {
     console.error("Error normalizing the database:", error);
   }
 };
-normalizeSlotData();
+// normalizeSlotData is called after DB connects (see server.js) or on demand
 
 const getRecentSlot = async (req, res) => {
   const { pId } = req.query; // Get patient ID from query parameters

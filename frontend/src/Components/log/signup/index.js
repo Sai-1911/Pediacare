@@ -24,13 +24,14 @@ function Signup() {
       }
   
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/patient/signup`, {
+        const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8000";
+        const response = await fetch(`${apiUrl}/patient/signup`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           credentials: "include",
-          body: JSON.stringify({ email, password, mobile, name }),
+          body: JSON.stringify({ email: email.trim(), password, mobile: mobile.trim(), name: name.trim() }),
         });
   
         const data = await response.json();

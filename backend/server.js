@@ -15,7 +15,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: 'http://localhost:3000', // Replace with your frontend URL
+  origin: ['http://localhost:3000', 'http://localhost:3001'], // Supports both port 3000 and 3001
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 }));

@@ -12,19 +12,21 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
   
-    if (!identifier || !password) {
+    const cleanIdentifier = identifier.trim();
+    if (!cleanIdentifier || !password) {
       setError("Please enter email/mobile and password.");
       return;
     }
   
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/patient/login`, {
+      const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8000";
+      const response = await fetch(`${apiUrl}/patient/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         credentials: "include",
-        body: JSON.stringify({ identifier, password }),
+        body: JSON.stringify({ identifier: cleanIdentifier, password }),
       });
   
       const data = await response.json();
