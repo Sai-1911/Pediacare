@@ -57,7 +57,7 @@ const signup = async (req, res) => {
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     });
 
@@ -66,7 +66,8 @@ const signup = async (req, res) => {
       patientNo: newPatient.patientNo,
       name: newPatient.name,
       email: newPatient.email,
-      mobile: newPatient.mobile
+      mobile: newPatient.mobile,
+      token: token
     });
   } catch (error) {
     console.error('Signup error:', error.message); // Log the error message
@@ -125,12 +126,13 @@ const login = async (req, res) => {
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     });
 
     res.json({
       message: 'Login successful',
+      token: token,
       user: {
         _id: user._id,
         patientNo: user.patientNo,
