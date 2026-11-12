@@ -1,5 +1,5 @@
 const { PatientModel, CounterModel }= require('../models/patient'); // Declare only once
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 // POST Route for Signup
