@@ -13,11 +13,11 @@ function walkDir(dir) {
             let content = fs.readFileSync(fullPath, 'utf8');
             let originalContent = content;
 
-            // Replace "http://localhost:8000/..." and 'http://localhost:8000/...' with `${process.env.REACT_APP_API_URL}/...`
-            content = content.replace(/(["'])http:\/\/localhost:8000([^"']*)(["'])/g, '`${process.env.REACT_APP_API_URL}$2`');
+            // Replace "https://pediacare.onrender.com" and 'https://pediacare.onrender.com' with `${process.env.REACT_APP_API_URL}/...`
+            content = content.replace(/(["'])http:\/\/pediacare.onrender.com([^"']*)(["'])/g, '`${process.env.REACT_APP_API_URL}$2`');
             
-            // Replace `http://localhost:8000/...` with `${process.env.REACT_APP_API_URL}/...`
-            content = content.replace(/`http:\/\/localhost:8000([^`]*)`/g, '`${process.env.REACT_APP_API_URL}$1`');
+            // Replace `https://pediacare.onrender.com` with `${process.env.REACT_APP_API_URL}/...`
+            content = content.replace(/`http:\/\/pediacare.onrender.com([^`]*)`/g, '`${process.env.REACT_APP_API_URL}$1`');
 
             if (content !== originalContent) {
                 console.log('Updated', fullPath);

@@ -34,7 +34,7 @@ const Chatbot = () => {
       const storedUser = localStorage.getItem("user");
       const userObj = storedUser ? JSON.parse(storedUser) : null;
 
-      const response = await axios.post(`${process.env.REACT_APP_API_URL || 'http://localhost:8000'}/chat`, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL || 'https://pediacare.onrender.com'}/chat`, {
         message: userMessage,
         user: userObj
       });

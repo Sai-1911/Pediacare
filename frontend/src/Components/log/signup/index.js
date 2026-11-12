@@ -24,7 +24,7 @@ function Signup() {
       }
   
       try {
-        const apiUrl = process.env.REACT_APP_API_URL || "http://localhost:8000";
+        const apiUrl = process.env.REACT_APP_API_URL || "https://pediacare.onrender.com";
         const response = await fetch(`${apiUrl}/patient/signup`, {
           method: "POST",
           headers: {
