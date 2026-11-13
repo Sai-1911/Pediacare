@@ -45,7 +45,7 @@ function Signup() {
           setPassword("");
           setMobile("");
           setName("");
-          navigate("/home");
+          navigate("/Home");
         } else {
           setError(data.error || "Signup failed. Please try again.");
         }
